@@ -6,26 +6,72 @@
     background: #f8f9fa;
   }
 
+  // .checkbox {
+  //   cursor: pointer;
+  //   flex: 1; //차지할 수 있는 영역 모두 차지
+  //   display: flex;
+  //   align-items: center;
+  //   svg {
+  //     font-size: 1.5rem;
+  //   }
+  //   .text {
+  //     margin-left: 0.5rem;
+  //     flex: 1;
+  //   }
+  //   &.checked {
+  //     svg {
+  //       color: #22b8cf;
+  //     }
+  //     .text {
+  //       color: #adb5bd;
+  //       text-decoration: line-through;
+  //     }
+  //   }
+  // }
+
   .checkbox {
     cursor: pointer;
-    flex: 1; //차지할 수 있는 영역 모두 차지
     display: flex;
     align-items: center;
     svg {
       font-size: 1.5rem;
     }
-    .text {
-      margin-left: 0.5rem;
-      flex: 1;
-    }
     &.checked {
       svg {
         color: #22b8cf;
       }
+    }
+  }
+
+  // .text {
+  //   margin-left: 0.5rem;
+  //   flex: 1;
+  //   display: flex;
+  //   align-items: center;
+  // }
+
+  .textbox {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    margin-left: 0.5rem;
+    &.checked {
       .text {
-        color: #adb5bd;
         text-decoration: line-through;
+        color: #adb5bd;
       }
+    }
+  }
+
+  .modify {
+    display: flex;
+    align-items: center;
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
+    color: #1ca4b9;
+    cursor: pointer;
+    &:hover {
+      color: #01ceee;
     }
   }
   .remove {
@@ -35,7 +81,7 @@
     color: #ff6b6b;
     cursor: pointer;
     &:hover {
-      color: #ff8787;
+      color: #fd8f8f;
     }
   }
   //엘리먼트 사이사이에 테두리를 넣어 줌.

@@ -1,15 +1,17 @@
 import "./App.css";
-import Todos from "./components/Todos";
 import TodoTemplate from "./components/TodoTemplate";
 import TodoInsert from "./components/TodoInsert.js";
 import TodoList from "./components/TodoList";
+import { useState } from "react";
 
 const App = () => {
+  const [value, setValue] = useState("");
+
   return (
     <div>
       <TodoTemplate>
-        <TodoInsert />
-        <TodoList />
+        <TodoInsert value={value} setValue={setValue} />
+        <TodoList value={value} setValue={setValue} />
       </TodoTemplate>
     </div>
   );

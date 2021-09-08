@@ -11,7 +11,7 @@ import rootReducer, { rootSaga } from "./modules/index.js";
 
 const logger = createLogger();
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(rootReducer, applyMiddleware(logger, sagaMiddleware));
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 
 sagaMiddleware.run(rootSaga);
 
