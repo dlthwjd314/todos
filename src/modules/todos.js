@@ -36,49 +36,6 @@ const initialState = {
   todos: [],
 };
 
-//update, delete의 경우 필드가 많으면 findIndex문을 따로 변수에 넣고 splice해야함 (기본형, immer 써서)
-//따로 빼놓을 수 없는 경우, 아래와 같이 update, delete 작성
-//근데 findIndex문을 splice에 넣었을 때, 오래걸리는건 이해하겠는데 왜 리렌더링 시 순서가 바뀔까?
-
-// const reducer = handleActions(
-//   {
-//     [GET_TODO_SUCCESS]: (state, action) => ({
-//       ...state,
-//       todos: action.payload,
-//     }),
-//     [ADD_TODO_SUCCESS]: (state, action) => ({
-//       ...state,
-//       todos: state.todos.concat(action.payload),
-//     }),
-//     [UPDATE_TODO_SUCCESS]: (state, action) => ({
-//       ...state,
-//       // todos: state.todos.splice(
-//       //   state.todos.findIndex(todo => todo.id === action.payload.id),
-//       //   1,
-//       //   action.payload
-//       // ),
-//       todos: state.todos.map(todo =>
-//         todo.id === action.payload.id
-//           ? {
-//               ...todo,
-//               checked: action.payload.checked,
-//               description: action.payload.description,
-//             }
-//           : todo
-//       ),
-//     }),
-//     [REMOVE_TODO_SUCCESS]: (state, action) => ({
-//       ...state,
-//       // todos: state.todos.splice(
-//       //   state.todos.findIndex(todo => todo.id === action.payload.id),
-//       //   1
-//       // ),
-//       todos: state.todos.filter(todo => todo.id !== action.payload.id),
-//     }),
-//   },
-//   initialState
-// );
-
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_TODO_SUCCESS:
@@ -89,30 +46,42 @@ const reducer = (state = initialState, action) => {
     case ADD_TODO_SUCCESS:
       return {
         ...state,
-        todos: [...state.todos, action.payload],
+        //todos: state.todos.concat(action.payload),
+        //todos: [...state.todos, action.payload],
+        todos: state.todos.shift(action.payload),
       };
     case UPDATE_TODO_SUCCESS:
       const index = state.todos.findIndex(
         todo => todo.id === action.payload.id
       );
-      // console.log("state.todos", state.todos);
-      console.log("action.payload", action.payload);
+      const newTodos = [...state.todos];
+      newTodos.splice(index, 1, action.payload);
       return {
         ...state,
-        todos: state.todos.map(todo =>
-          todo.id === action.payload.id
-            ? {
-                ...todo,
-                checked: action.payload.checked,
-                description: action.payload.description,
-              }
-            : todo
-        ),
+        // todos: state.todos.map(todo =>
+        //   todo.id === action.payload.id
+        //     ? {
+        //         ...todo,
+        //         checked: action.payload.checked,
+        //         description: action.payload.description,
+        //       }
+        //     : todo
+        // ),
+
+        //todos: state.todos.splice(index, 1, action.payload), //기존 배열 건드려서 안됨.
+        todos: newTodos,
       };
     case REMOVE_TODO_SUCCESS:
+      const indexRemove = state.todos.findIndex(
+        todo => todo.id === action.payload.id
+      );
+      const newTodosRm = [...state.todos];
+      newTodos.splice(indexRemove, 1);
       return {
         ...state,
-        todos: state.todos.filter(todo => todo.id !== action.payload.id),
+        //todos: state.todos.filter(todo => todo.id !== action.payload.id),
+        //todos: state.todos.splice(indexRemove, 1), //기존 배열 건드려서 안됨
+        todos: newTodosRm,
       };
     default:
       return state;

@@ -19,6 +19,7 @@ const TodoInsert = props => {
       dispatch(
         addTodo({
           description: value,
+          date: new Date().toString(),
         })
       );
     },
