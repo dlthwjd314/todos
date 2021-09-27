@@ -1,13 +1,9 @@
 import axios from "axios";
 
-const apiBaseUrl = "http://localhost:8080/todo/";
+const apiBaseUrl = "http://localhost:3000/todo";
 
 export const getAll = async () => {
   return await axios(apiBaseUrl);
-};
-
-export const getByDate = async date => {
-  return await axios(`${apiBaseUrl}${date}`, { method: "GET" });
 };
 
 export const create = async todo => {
@@ -29,11 +25,16 @@ export const update = async todo => {
       "Content-Type": "application/json",
     },
   };
-  return await axios(apiBaseUrl, options);
+  return await axios(`${apiBaseUrl}/${todo.id}`, options);
 };
 
-export const remove = async id => {
-  return await axios(`${apiBaseUrl}${id}`, {
+export const remove = async todo => {
+  const options = {
     method: "DELETE",
-  });
+    data: { ...todo },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return await axios(apiBaseUrl, options);
 };

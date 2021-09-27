@@ -6,6 +6,9 @@ import createRequestSaga from "../lib/createRequestSaga";
 const GET_TODO = "GET_TODO";
 const GET_TODO_SUCCESS = "GET_TODO_SUCCESS";
 
+const GET_TODO_DATE = "GET_TODO_DATE";
+const GET_TODO_DATE_SUCCESS = "GET_TODO_DATE_SUCCESS";
+
 const ADD_TODO = "ADD_TODO";
 const ADD_TODO_SUCCESS = "ADD_TODO_SUCCESS";
 
@@ -16,17 +19,24 @@ const REMOVE_TODO = "REMOVE_TODO";
 const REMOVE_TODO_SUCCESS = "REMOVE_TODO_SUCCESS";
 
 export const getTodo = createAction(GET_TODO);
+export const getTodoDate = createAction(GET_TODO_DATE, date => date);
+
 export const addTodo = createAction(ADD_TODO, todo => todo);
 export const updateTodo = createAction(UPDATE_TODO, todo => todo);
 export const removeTodo = createAction(REMOVE_TODO, id => id);
+//export const removeTodo = createAction(REMOVE_TODO, todo => todo); //nest
 
 export const getTodoSaga = createRequestSaga(GET_TODO, api.getAll);
+export const getTodoDateSaga = createRequestSaga(GET_TODO, api.getByDate);
+
 export const addTodoSaga = createRequestSaga(ADD_TODO, api.create);
 export const updateTodoSaga = createRequestSaga(UPDATE_TODO, api.update);
 export const removeTodoSaga = createRequestSaga(REMOVE_TODO, api.remove);
 
 export function* todoSaga() {
   yield takeLatest(GET_TODO, getTodoSaga);
+  yield takeLatest(GET_TODO_DATE, getTodoDateSaga);
+
   yield takeLatest(ADD_TODO, addTodoSaga);
   yield takeLatest(UPDATE_TODO, updateTodoSaga);
   yield takeLatest(REMOVE_TODO, removeTodoSaga);
@@ -38,7 +48,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_TODO_SUCCESS:
+    case GET_TODO_SUCCESS || GET_TODO_DATE_SUCCESS:
       return {
         ...state,
         todos: action.payload,
@@ -47,8 +57,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         //todos: state.todos.concat(action.payload),
-        //todos: [...state.todos, action.payload],
-        todos: state.todos.shift(action.payload),
+        todos: [...state.todos, action.payload],
+        //todos: state.todos.shift(action.payload),
       };
     case UPDATE_TODO_SUCCESS:
       const index = state.todos.findIndex(
@@ -73,14 +83,15 @@ const reducer = (state = initialState, action) => {
       };
     case REMOVE_TODO_SUCCESS:
       const indexRemove = state.todos.findIndex(
-        todo => todo.id === action.payload.id
+        todo => todo.id === action.payload
       );
       const newTodosRm = [...state.todos];
-      newTodos.splice(indexRemove, 1);
+      newTodosRm.splice(indexRemove, 1);
       return {
         ...state,
         //todos: state.todos.filter(todo => todo.id !== action.payload.id),
-        //todos: state.todos.splice(indexRemove, 1), //기존 배열 건드려서 안됨
+        // todos: state.todos.filter(todo => todo.id !== action.payload),
+        // todos: state.todos.splice(indexRemove, 1), //기존 배열 건드려서 안됨
         todos: newTodosRm,
       };
     default:

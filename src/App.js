@@ -1,20 +1,13 @@
 import "./App.css";
-import TodoTemplate from "./components/TodoTemplate";
-import TodoInsert from "./components/TodoInsert.js";
-import TodoList from "./components/TodoList";
-import { useState } from "react";
-import PickDate from "./components/DatePicker";
+import { Route } from "react-router-dom";
+import TodoCalendar from "./components/TodoCalendar";
+import TodoIndex from "./components";
 
 const App = () => {
-  const [value, setValue] = useState("");
-
   return (
     <div>
-      <PickDate />
-      <TodoTemplate>
-        <TodoInsert value={value} setValue={setValue} />
-        <TodoList value={value} setValue={setValue} />
-      </TodoTemplate>
+      <Route exact path="/" component={TodoCalendar} />
+      <Route exact path="/todo/:date" component={TodoIndex} />
     </div>
   );
 };

@@ -1,18 +1,24 @@
 import React, { useEffect } from "react";
+import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import TodoListItem from "./TodoListItem";
 import "./TodoList.scss";
-import { getTodo } from "../modules/todos";
+import { getTodo, getTodoDate } from "../modules/todos";
 
 const TodoList = props => {
   const { value, setValue } = props;
   const todos = useSelector(state => state.reducer.todos);
+  const { date } = useParams();
+
   const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getTodo());
+  // }, [dispatch]);
+
   useEffect(() => {
-    dispatch(getTodo());
+    dispatch(getTodoDate(date));
   }, [dispatch]);
 
-  // console.log("todos111", todos);
   return (
     <div className="TodoList">
       {todos.map(todo => (

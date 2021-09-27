@@ -19,7 +19,7 @@ const TodoInsert = props => {
       dispatch(
         addTodo({
           description: value,
-          date: new Date().toString(),
+          date: new Date().toString().substring(0, 15).replace(/(\s*)/g, ""),
         })
       );
     },
@@ -36,8 +36,12 @@ const TodoInsert = props => {
     [value] //이전 value값이 들어갈 수 있으므로 value값이 바뀔 때 마다
   );
 
+  const onAlert = () => {
+    alert("할 일을 입력해주세요.");
+  };
+
   return (
-    <form className="TodoInsert" onSubmit={onSubmit}>
+    <form className="TodoInsert" onSubmit={value !== "" ? onSubmit : onAlert}>
       {/* onSubmit -> enter키도 감지 */}
       <input
         placeholder="할 일을 입력하세요."
